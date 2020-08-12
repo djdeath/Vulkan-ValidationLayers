@@ -6481,13 +6481,17 @@ void ThreadSafety::PostCallRecordAcquirePerformanceConfigurationINTEL(
     VkPerformanceConfigurationINTEL*            pConfiguration,
     VkResult                                    result) {
     FinishReadObjectParentInstance(device, "vkAcquirePerformanceConfigurationINTEL");
+    if (result == VK_SUCCESS) {
+        CreateObject(*pConfiguration);
+    }
 }
 
 void ThreadSafety::PreCallRecordReleasePerformanceConfigurationINTEL(
     VkDevice                                    device,
     VkPerformanceConfigurationINTEL             configuration) {
     StartReadObjectParentInstance(device, "vkReleasePerformanceConfigurationINTEL");
-    StartReadObject(configuration, "vkReleasePerformanceConfigurationINTEL");
+    StartWriteObject(configuration, "vkReleasePerformanceConfigurationINTEL");
+    // Host access to configuration must be externally synchronized
 }
 
 void ThreadSafety::PostCallRecordReleasePerformanceConfigurationINTEL(
@@ -6495,7 +6499,9 @@ void ThreadSafety::PostCallRecordReleasePerformanceConfigurationINTEL(
     VkPerformanceConfigurationINTEL             configuration,
     VkResult                                    result) {
     FinishReadObjectParentInstance(device, "vkReleasePerformanceConfigurationINTEL");
-    FinishReadObject(configuration, "vkReleasePerformanceConfigurationINTEL");
+    FinishWriteObject(configuration, "vkReleasePerformanceConfigurationINTEL");
+    DestroyObject(configuration);
+    // Host access to configuration must be externally synchronized
 }
 
 void ThreadSafety::PreCallRecordQueueSetPerformanceConfigurationINTEL(

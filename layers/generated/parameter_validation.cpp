@@ -11089,8 +11089,6 @@ bool StatelessValidation::PreCallValidateInitializePerformanceApiINTEL(
     if (pInitializeInfo != NULL)
     {
         skip |= validate_struct_pnext("vkInitializePerformanceApiINTEL", "pInitializeInfo->pNext", NULL, pInitializeInfo->pNext, 0, NULL, GeneratedVulkanHeaderVersion, "VUID-VkInitializePerformanceApiInfoINTEL-pNext-pNext", kVUIDUndefined);
-
-        skip |= validate_required_pointer("vkInitializePerformanceApiINTEL", "pInitializeInfo->pUserData", pInitializeInfo->pUserData, kVUIDUndefined);
     }
     return skip;
 }
@@ -11168,7 +11166,7 @@ bool StatelessValidation::PreCallValidateReleasePerformanceConfigurationINTEL(
     VkPerformanceConfigurationINTEL             configuration) const {
     bool skip = false;
     if (!device_extensions.vk_intel_performance_query) skip |= OutputExtensionError("vkReleasePerformanceConfigurationINTEL", VK_INTEL_PERFORMANCE_QUERY_EXTENSION_NAME);
-    skip |= validate_required_handle("vkReleasePerformanceConfigurationINTEL", "configuration", configuration);
+    // No xml-driven validation
     return skip;
 }
 
